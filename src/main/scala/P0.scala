@@ -1,11 +1,12 @@
-import scala.io.StdIn.readLine
+import scala.io.StdIn.{readChar, readLine}
 
 class P0 {
-  val trans: Array[String] = new Array[String]("reverseAll", "invertAll", "oddifyAll", "evenifyAll")
+  val trans: Array[String] = Array("reverseAll", "invertAll", "oddifyAll", "evenifyAll")
 
   def main(args: Array[String]): Unit ={
     //try {
-      val x: Char = readLine("So, think the lanes will favor you today?\nOr will you shuffle them? Press y or n: ")
+    println("So, think the lanes will favor you today?\nOr will you shuffle them? Press y or n: ")
+      val x: Char = readChar()
 //    } catch {
 //    }
     if (x == 'y') {
