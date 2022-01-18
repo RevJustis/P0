@@ -8,11 +8,12 @@ object P0 {
     val connection = jdbcConnection()
     var goodIn: Boolean = false
     var lane: Byte = 0
+    var shuff: Byte = 0
 
     println("So, think the lanes will favor you today?\nOr will you shuffle them? Press y or n: ")
     val x: Char = readChar()
 
-    while (goodIn){
+    while (!goodIn){
       if (x == 'y' || x == 'n') {
         goodIn = true
       } else {
@@ -24,7 +25,7 @@ object P0 {
     print("\n~~~~~~~~~~\n")
 
     if (x == 'y') {
-      ShuffleTerm()
+      shuff = ShuffleTerm()
     } else {
       lane = ChooseLane()
     }
@@ -36,7 +37,7 @@ object P0 {
     var in = readChar()
     var goodIn = false
 
-    while (goodIn){
+    while (!goodIn){
       if (in == '1' || in == '2' || in == '3') {
         goodIn = true
       } else {
@@ -47,10 +48,29 @@ object P0 {
     in.toByte
   }
 
-  def ShuffleTerm(): Unit ={
+  def ShuffleTerm(): Byte = {
+    var i = 1
+    var inByte: Byte = 0
+    var goodIn = false
+
     println("Ah, the \"hands on\" type... Here are your options:")
-    //trans.foreach
-    val in = readLine("Ah, the \"hands on\" type... Here are your options:")
+    for (x <- trans) {
+      print(i + ")" + x + " ")
+      i += 1
+    }
+    println()
+
+    var in = readChar()
+    while (!goodIn){
+      in match {
+        case '1'  => goodIn = true; inByte = 1
+        case '2'  => goodIn = true; inByte = 2
+        case '3'  => goodIn = true; inByte = 3
+        case '4'  => goodIn = true; inByte = 4
+        case _  => println("Sorry, but you have to choose '1', '2', '3', or '4': "); in = readChar()
+      }
+    }
+    inByte
   }
 
   def jdbcConnection(): Connection = {
