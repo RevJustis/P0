@@ -6,29 +6,34 @@ object P0 {
 
   def main(args: Array[String]): Unit ={
     val connection = jdbcConnection()
+    var inByte: Byte = 0
     var goodIn: Boolean = false
     var lane: Byte = 0
     var shuff: Byte = 0
 
-    println("So, think the lanes will favor you today?\nOr will you shuffle them? Press y or n: ")
-    val x: Char = readChar()
+    println("So, think the lanes will favor you today?\nOr will you shuffle them?\n" +
+      "Or maybe you want to mess with them?\n")
+    println("1)Leave the lanes alone\n2)Create new lanes\n3)Transform the lanes")
+    var in: Char = readChar()
 
     while (!goodIn){
-      if (x == 'y' || x == 'n') {
-        goodIn = true
-      } else {
-        println("Sorry, but you have to say 'yes' or 'no'")
-        val x = readChar()
+      in match {
+        case '1'  => goodIn = true; inByte = 1
+        case '2'  => goodIn = true; inByte = 2
+        case '3'  => goodIn = true; inByte = 3
+        case _  => println("Sorry, but you have to choose '1', '2', or '3': "); in = readChar()
       }
     }
 
     print("\n~~~~~~~~~~\n")
 
-    if (x == 'y') {
-      shuff = ShuffleTerm()
-    } else {
-      lane = ChooseLane()
+    val result = inByte match { // result should be an int, currently functions return type Byte
+      case 1 => ChooseLane()
+      case 2 => Shuffle()
+      case 3 => ChooseTrans()
     }
+
+    println("Your Run Result is: " + result)
   }
 
   def ChooseLane(): Byte = {
@@ -48,7 +53,7 @@ object P0 {
     in.toByte
   }
 
-  def ShuffleTerm(): Byte = {
+  def ChooseTrans(): Byte = {
     var i = 1
     var inByte: Byte = 0
     var goodIn = false
@@ -70,7 +75,11 @@ object P0 {
         case _  => println("Sorry, but you have to choose '1', '2', '3', or '4': "); in = readChar()
       }
     }
-    inByte
+    (inByte - 1).toByte
+  }
+
+  def Shuffle(): Byte = {
+    0.toByte // Placeholder
   }
 
   def jdbcConnection(): Connection = {
