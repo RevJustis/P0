@@ -21,14 +21,14 @@ object P0 {
         case '1'  => goodIn = true; inByte = 1
         case '2'  => goodIn = true; inByte = 2
         case '3'  => goodIn = true; inByte = 3
-        case _  => println("Sorry, but you have to choose '1', '2', or '3': "); in = readChar()
+        case _  => print("\rSorry, but you have to choose '1', '2', or '3': "); in = readChar()
       }
     }
 
-    print("\n~~~~~~~~~~\n")
+    line()
 
     val result = inByte match { // result should be an int, currently functions return type Byte
-      case 1 => ChooseLane()
+      case 1 => PlayLane()
       case 2 => Shuffle()
       case 3 => ChooseTrans()
     }
@@ -36,7 +36,16 @@ object P0 {
     println("Your Run Result is: " + result)
   }
 
-  def ChooseLane(): Byte = {
+  def slpClr(seconds: Int): Unit ={
+    Thread.sleep(seconds * 1000)
+    print("\r")
+  }
+
+  def line(): Unit = {
+    print("\n~~~~~~~~~~\n")
+  }
+
+  def PlayLane(): Byte = {
     println("There are three lanes in front of you, each with 200 collectibles of differing value and buffs and debuffs.")
     println("Please choose a lane, and we will see how you fare... 1, 2, or 3?")
     var in = readChar()
