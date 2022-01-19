@@ -11,4 +11,13 @@ object CRUD { // All functions currently placeholders
       println("host, user = " + host + ", " + user)
     }
   }
+  def Read(): Unit ={
+
+  }
+  def Update(track: Int, kind: Int): Unit ={
+
+  }
+  def Delete(): Unit ={
+
+  }
 }
