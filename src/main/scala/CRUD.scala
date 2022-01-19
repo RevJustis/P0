@@ -1,7 +1,7 @@
 import java.sql.{Connection, DriverManager}
 
 object CRUD { // All functions currently placeholders
-  def Create(con: Connection, num: Int): Unit = {
+  def create(con: Connection, num: Int): Unit = {
     // create the statement, and run the select query
     val statement = con.createStatement()
     val resultSet = statement.executeQuery("SELECT host, user FROM user")
@@ -11,13 +11,13 @@ object CRUD { // All functions currently placeholders
       println("host, user = " + host + ", " + user)
     }
   }
-  def Read(track: Byte, lane: Byte): Int ={
+  def read(track: Byte, lane: Byte): Int ={
     1// Placeholder
   }
-  def Update(track: Int, kind: Int): Unit ={
+  def update(track: Int, kind: Int): Unit ={
 
   }
-  def Delete(): Unit ={
+  def delete(): Unit ={
 
   }
 }

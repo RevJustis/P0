@@ -8,7 +8,7 @@ object P0 {
 
   def main(args: Array[String]): Unit ={
     // Start off by creating any necessary large scope variables
-    val con = JDBCCon() // The connection to the database
+    val con = dbConn() // The connection to the database
     var result: Int = 0
     var played: Boolean = false
 
@@ -19,9 +19,9 @@ object P0 {
     line()
 
     rounds match {
-      case 1 => Create(con, 1)// If 1 rounds, create 1 table
-      case 2 => Create(con, 2)// If 2 rounds, create 2 tables
-      case 3 => Create(con, 3)// etc...
+      case 1 => create(con, 1)// If 1 rounds, create 1 table
+      case 2 => create(con, 2)// If 2 rounds, create 2 tables
+      case 3 => create(con, 3)// etc...
     }
 
     while (!played) {// Loops so user can continue to shuffle or transform many times
@@ -33,15 +33,15 @@ object P0 {
       line()
 
       path match { // result should be an int, currently functions return type Byte
-        case 1 => result = Play(rounds); played = true// After playing the loop will terminate
-        case 2 => Shuffle(rounds)
-        case 3 => Trans(rounds)
+        case 1 => result = play(rounds); played = true// After playing the loop will terminate
+        case 2 => shuffle(rounds)
+        case 3 => trans(rounds)
       }
     }
     println("Your Run Result is: " + result)
   }
 
-  def Play(track: Byte): Int = {
+  def play(track: Byte): Int = {
     var i = 0// Iterator counter
     var result: Int = 0
     while (i < track) {
@@ -51,22 +51,22 @@ object P0 {
       println("Please choose a lane, and we will see how you fare...\n~1~\n~2~\n~3~")
       var lane: Byte = choose123()// Gets users lane choice as a Byte
       // Runs the read function, which returns the score of the full run on user's chosen track and lane
-      result += Read(track, lane)
+      result += read(track, lane)
       i += 1// Increment so loop will eventually terminate
     }
     result
   }
 
-  def Shuffle(rounds: Byte): Unit = {
+  def shuffle(rounds: Byte): Unit = {
     if (rounds > 1) {
       println("Which track do you want to shuffle?\n~1~\n~2~\n~3~")
       val choice = choose123()
     } else {
-      Update(1, 0)
+      update(1, 0)
     }
   }
 
-  def Trans(rounds: Byte): Unit = {
+  def trans(rounds: Byte): Unit = {
     var i = 1
     var track: Byte = 1
 
@@ -86,13 +86,13 @@ object P0 {
     val kind = choose123()
 
     kind match {
-      case 1 => Update(track, kind)// reverseTrack
-      case 2 => Delete()// noOddBuff
-      case 3 => Delete()// noEvenBuff
+      case 1 => update(track, kind)// reverseTrack
+      case 2 => delete()// noOddBuff
+      case 3 => delete()// noEvenBuff
     }
   }
 
-  def JDBCCon(): Connection = {
+  def dbConn(): Connection = {
     val url = "jdbc:mysql://localhost:3306/sys"
     val username = "root"
     val password = "rootpass"
