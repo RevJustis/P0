@@ -11,8 +11,8 @@ object CRUD { // All functions currently placeholders
       println("host, user = " + host + ", " + user)
     }
   }
-  def Read(): Unit ={
-
+  def Read(track: Byte, lane: Byte): Int ={
+    1// Placeholder
   }
   def Update(track: Int, kind: Int): Unit ={
 

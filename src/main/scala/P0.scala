@@ -10,8 +10,6 @@ object P0 {
     // Start off by creating any necessary large scope variables
     val con = JDBCCon() // The connection to the database
     var result: Int = 0
-    var lane: Byte = 0
-    var shuff: Byte = 0
 
     println("Hello! Ready to go for a run?")
     // Ask the user how many rounds they would like to play
@@ -34,7 +32,7 @@ object P0 {
 
     var transChoice = 0
     path match { // result should be an int, currently functions return type Byte
-      case 1 => Play()
+      case 1 => Play(1.toByte)
       case 2 => Shuffle(rounds)
       case 3 => transChoice = ChooseTrans()
     }
@@ -42,20 +40,11 @@ object P0 {
     println("Your Run Result is: " + result)
   }
 
-  def Play(): Unit = {
+  def Play(track: Byte): Int = {
     println("There are three lanes in front of you, each with 200 collectibles of differing value and buffs and debuffs.")
     println("Please choose a lane, and we will see how you fare... 1, 2, or 3?")
-    var in = readChar()
-    var goodIn = false
-
-    while (!goodIn){
-      if (in == '1' || in == '2' || in == '3') {
-        goodIn = true
-      } else {
-        println("Sorry, but you have to choose '1', '2', or '3': ")
-        in = readChar()
-      }
-    }
+    var lane: Byte = choose123()// Gets users lane choice as a Byte
+    Read(track, lane)// Runs the read function, which returns the score of the full run on user's chosen track and lane
   }
 
   def ChooseTrans(): Byte = {
