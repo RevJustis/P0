@@ -1,11 +1,12 @@
 import java.sql.{Connection, DriverManager}
 import scala.io.StdIn.{readChar, readLine}
+import Utilities._
 
 object P0 {
   val trans: Array[String] = Array("reverseAll", "invertAll", "oddifyAll", "evenifyAll")
 
   def main(args: Array[String]): Unit ={
-    val connection = jdbcConnection()
+    val connection = JDBCCon()
     var inByte: Byte = 0
     var goodIn: Boolean = false
     var lane: Byte = 0
@@ -34,15 +35,6 @@ object P0 {
     }
 
     println("Your Run Result is: " + result)
-  }
-
-  def slpClr(seconds: Int): Unit ={
-    Thread.sleep(seconds * 1000)
-    print("\r")
-  }
-
-  def line(): Unit = {
-    print("\n~~~~~~~~~~\n")
   }
 
   def PlayLane(): Byte = {
@@ -91,27 +83,13 @@ object P0 {
     0.toByte // Placeholder
   }
 
-  def jdbcConnection(): Connection = {
+  def JDBCCon(): Connection = {
     val url = "jdbc:mysql://localhost:3306/sys"
     val username = "root"
     val password = "rootpass"
     val driver = "com.mysql.jdbc.Driver"
-    val con = DriverManager.getConnection(url, username, password)
-
-    try {
-      // make the connection
-      //Class.forName(driver)
-      val connection = DriverManager.getConnection(url, username, password)
-      println("Successfully connected to ", connection)
-      connection
-      // create the statement, and run the select query
-//      val statement = connection.createStatement()
-//      val resultSet = statement.executeQuery("SELECT host, user FROM user")
-//      while ( resultSet.next() ) {
-//        val host = resultSet.getString("host")
-//        val user = resultSet.getString("user")
-//        println("host, user = " + host + ", " + user)
-//      }
-    }
+    val connection = DriverManager.getConnection(url, username, password)
+    println("Successfully connected to ", connection)
+    connection
   }
 }
