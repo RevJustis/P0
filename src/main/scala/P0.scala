@@ -4,12 +4,13 @@ import Utilities._
 import CRUD._
 
 object P0 {
-  val trans: Array[String] = Array("reverseAll", "invertAll", "oddifyAll", "evenifyAll")
+  val trans: Array[String] = Array("reverseAll", "noOddBuff", "noEvenBuff")
 
   def main(args: Array[String]): Unit ={
     // Start off by creating any necessary large scope variables
     val con = JDBCCon() // The connection to the database
     var result: Int = 0
+    var played: Boolean = false
 
     println("Hello! Ready to go for a run?")
     // Ask the user how many rounds they would like to play
@@ -23,53 +24,37 @@ object P0 {
       case 3 => Create(con, 3)// etc...
     }
 
-    // Ask if use would like to start or do something else first
-    println("So, think the lanes will favor you today?\nOr will you shuffle them?\n" +
-      "Or maybe you want to mess with them?\n")
-    println("1)Leave the lanes alone\n2)Create new lanes\n3)Transform the lanes")
-    val path = choose123()
-    line()
+    while (!played) {// Loops so user can continue to shuffle or transform many times
+      // Ask if use would like to start or do something else first
+      println("So, think the lanes will favor you today?\nOr will you shuffle them?\n" +
+        "Or maybe you want to mess with them?\n")
+      println("~1~Leave the lanes alone\n~2~Create new lanes\n~3~Transform the lanes")
+      val path = choose123()
+      line()
 
-    var transChoice = 0
-    path match { // result should be an int, currently functions return type Byte
-      case 1 => Play(1.toByte)
-      case 2 => Shuffle(rounds)
-      case 3 => transChoice = ChooseTrans()
+      path match { // result should be an int, currently functions return type Byte
+        case 1 => result = Play(rounds); played = true// After playing the loop will terminate
+        case 2 => Shuffle(rounds)
+        case 3 => Trans(rounds)
+      }
     }
-
     println("Your Run Result is: " + result)
   }
 
   def Play(track: Byte): Int = {
-    println("There are three lanes in front of you, each with 200 collectibles of differing value and buffs and debuffs.")
-    println("Please choose a lane, and we will see how you fare... 1, 2, or 3?")
-    var lane: Byte = choose123()// Gets users lane choice as a Byte
-    Read(track, lane)// Runs the read function, which returns the score of the full run on user's chosen track and lane
-  }
-
-  def ChooseTrans(): Byte = {
-    var i = 1
-    var inByte: Byte = 0
-    var goodIn = false
-
-    println("Ah, the \"hands on\" type... Here are your options:")
-    for (x <- trans) {
-      print(i + ")" + x + " ")
-      i += 1
+    var i = 0// Iterator counter
+    var result: Int = 0
+    while (i < track) {
+      println("\\/\\/\\/ROUND " + (i + 1) + " START\\/\\/\\/")
+      println("There are three lanes in front of you, each with 200 collectibles of differing " +
+        "value and buffs and debuffs.")
+      println("Please choose a lane, and we will see how you fare...\n~1~\n~2~\n~3~")
+      var lane: Byte = choose123()// Gets users lane choice as a Byte
+      // Runs the read function, which returns the score of the full run on user's chosen track and lane
+      result += Read(track, lane)
+      i += 1// Increment so loop will eventually terminate
     }
-    println()
-
-    var in = readChar()
-    while (!goodIn){
-      in match {
-        case '1'  => goodIn = true; inByte = 1
-        case '2'  => goodIn = true; inByte = 2
-        case '3'  => goodIn = true; inByte = 3
-        case '4'  => goodIn = true; inByte = 4
-        case _  => println("Sorry, but you have to choose '1', '2', '3', or '4': "); in = readChar()
-      }
-    }
-    (inByte - 1).toByte
+    result
   }
 
   def Shuffle(rounds: Byte): Unit = {
@@ -78,6 +63,32 @@ object P0 {
       val choice = choose123()
     } else {
       Update(1, 0)
+    }
+  }
+
+  def Trans(rounds: Byte): Unit = {
+    var i = 1
+    var track: Byte = 1
+
+    print("Ah, the \"hands on\" type... ")
+    rounds match {
+      case 2 => println("Which track do you want to transform?\n~1~\n~2~");
+        track = choose123()
+      case 3 => println("Which track do you want to transform?\n~1~\n~2~\n~3~");
+        track = choose123()
+    }
+
+    println("Here are your options:")
+    for (x <- trans) {
+      println(i + ")" + x + " ")
+      i += 1
+    }
+    val kind = choose123()
+
+    kind match {
+      case 1 => Update(track, kind)// reverseTrack
+      case 2 => Delete()// noOddBuff
+      case 3 => Delete()// noEvenBuff
     }
   }
 
