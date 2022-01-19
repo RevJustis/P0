@@ -1,7 +1,7 @@
 import java.sql.{Connection, DriverManager}
 
 object CRUD { // All functions currently placeholders
-  def Create(con: Connection): Unit = {
+  def Create(con: Connection, num: Int): Unit = {
     // create the statement, and run the select query
     val statement = con.createStatement()
     val resultSet = statement.executeQuery("SELECT host, user FROM user")
