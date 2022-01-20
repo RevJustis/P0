@@ -7,7 +7,7 @@ object Utilities {
   }
 
   def line(): Unit = {
-    print("\n~~~~~~~~~~\n")
+    print("\n~~~~~~~~~~\n\n")
   }
 
   def choose123(): Byte ={
@@ -20,7 +20,7 @@ object Utilities {
         case '1'  => goodIn = true; inByte = 1.toByte
         case '2'  => goodIn = true; inByte = 2.toByte
         case '3'  => goodIn = true; inByte = 3.toByte
-        case _  => print("\rSorry, but you have to choose '1', '2', or '3': "); input = readChar()
+        case _  => print("Sorry, but you have to choose '1', '2', or '3': "); input = readChar()
       }
     }
     inByte

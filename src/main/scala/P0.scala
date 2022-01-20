@@ -27,9 +27,9 @@ object P0 {
     while (!played) {// Loops so user can continue to shuffle or transform many times
       // Ask if use would like to start or do something else first
       println("So, think the lanes will favor you today?\nOr will you shuffle them?\n" +
-        "Or maybe you want to mess with them?\n")
-      println("~1~Leave the lanes alone\n~2~Create new lanes\n~3~Transform the lanes")
-      val path = choose123()
+        "Or maybe you want to mess with them?")
+      println("~1~Leave the lanes alone\n~2~Regenerate lanes\n~3~Transform the lanes")
+      val path: Byte = choose123()
       line()
 
       path match { // result should be an int, currently functions return type Byte
@@ -45,11 +45,12 @@ object P0 {
     var i = 0// Iterator counter
     var result: Int = 0
     while (i < track) {
-      println("\\/\\/\\/ROUND " + (i + 1) + " START\\/\\/\\/")
+      println("_ROUND " + (i + 1) + " START_")
       println("There are three lanes in front of you, each with 200 collectibles of differing " +
         "value and buffs and debuffs.")
       println("Please choose a lane, and we will see how you fare...\n~1~\n~2~\n~3~")
       var lane: Byte = choose123()// Gets users lane choice as a Byte
+      line()
       // Runs the read function, which returns the score of the full run on user's chosen track and lane
       result += read(track, lane)
       i += 1// Increment so loop will eventually terminate
@@ -72,15 +73,14 @@ object P0 {
 
     print("Ah, the \"hands on\" type... ")
     rounds match {
-      case 2 => println("Which track do you want to transform?\n~1~\n~2~");
-        track = choose123()
-      case 3 => println("Which track do you want to transform?\n~1~\n~2~\n~3~");
-        track = choose123()
+      case 2 => println("Which track do you want to transform?\n~1~\n~2~"); track = choose123()
+      case 3 => println("Which track do you want to transform?\n~1~\n~2~\n~3~"); track = choose123()
+      case _ =>
     }
 
     println("Here are your options:")
     for (x <- trans) {
-      println(i + ")" + x + " ")
+      println(s"~$i~$x ")
       i += 1
     }
     val kind = choose123()
@@ -90,6 +90,8 @@ object P0 {
       case 2 => delete()// noOddBuff
       case 3 => delete()// noEvenBuff
     }
+    println("Transformation complete...")
+    line()
   }
 
   def dbConn(): Connection = {
