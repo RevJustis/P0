@@ -4,11 +4,11 @@ import Utilities._
 import CRUD._
 
 object P0 {
-  val trans: Array[String] = Array("reverseAll", "noOddBuff", "noEvenBuff")
+  private val trans: Array[String] = Array("reverseAll", "noOddBuff", "noEvenBuff")
+  private val con = dbConn() // The connection to the database
 
   def main(args: Array[String]): Unit ={
     // Start off by creating any necessary large scope variables
-    val con = dbConn() // The connection to the database
     var result: Int = 0
     var played: Boolean = false
 
@@ -33,7 +33,7 @@ object P0 {
       line()
 
       path match { // result should be an int, currently functions return type Byte
-        case 1 => result = play(rounds); played = true// After playing the loop will terminate
+        case 1 => result = play(con, rounds); played = true// After playing the loop will terminate
         case 2 => shuffle(rounds)
         case 3 => trans(rounds)
       }
@@ -41,7 +41,7 @@ object P0 {
     println("Your Run Result is: " + result)
   }
 
-  def play(track: Byte): Int = {
+  def play(con: Connection, track: Byte): Int = {
     var i = 0// Iterator counter
     var result: Int = 0
     while (i < track) {
@@ -52,7 +52,7 @@ object P0 {
       var lane: Byte = choose123()// Gets users lane choice as a Byte
       line()
       // Runs the read function, which returns the score of the full run on user's chosen track and lane
-      result += read(track, lane)
+      result += read(con, track, lane)
       i += 1// Increment so loop will eventually terminate
     }
     result
@@ -87,8 +87,8 @@ object P0 {
 
     kind match {
       case 1 => update(track, kind)// reverseTrack
-      case 2 => delete()// noOddBuff
-      case 3 => delete()// noEvenBuff
+      case 2 => delete(con)// noOddBuff
+      case 3 => delete(con)// noEvenBuff
     }
     println("Transformation complete...")
     line()
@@ -99,7 +99,11 @@ object P0 {
     val username = "root"
     val password = "rootpass"
     val driver = "com.mysql.jdbc.Driver"
-    val connection = DriverManager.getConnection(url, username, password)
+    val connection = DriverManager.getConnection(
+      url,
+      username,
+      password
+    )
     println("Successfully connected to ", connection)
     connection
   }
