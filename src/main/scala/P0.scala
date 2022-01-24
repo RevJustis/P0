@@ -87,8 +87,8 @@ object P0 {
 
     kind match {
       case 1 => update(track, kind)// reverseTrack
-      case 2 => delete(con)// noOddBuff
-      case 3 => delete(con)// noEvenBuff
+      case 2 => delete(con, 1)// noOddBuff
+      case 3 => delete(con, 2)// noEvenBuff
     }
     println("Transformation complete...")
     line()
