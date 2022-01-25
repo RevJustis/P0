@@ -9,6 +9,11 @@ object CRUD { // All functions currently placeholders
   val delEvenDebuff1 = "DELETE FROM track1 WHERE lane1 = 8 OR lane2 = 8 OR lane3 = 8;"
   val delEvenDebuff2 = "DELETE FROM track2 WHERE lane1 = 8 OR lane2 = 8 OR lane3 = 8;"
   val delEvenDebuff3 = "DELETE FROM track3 WHERE lane1 = 8 OR lane2 = 8 OR lane3 = 8;"
+  var rev1 = false
+  var rev2 = false
+  var rev3 = false
+  var oddType: Byte = 0
+  var evenType: Byte = 0
 
   def create(con: Connection, num: Byte, single: Boolean): Unit = {// Create a statement to execute create command
     if (!single) {
@@ -32,20 +37,59 @@ object CRUD { // All functions currently placeholders
   }
 
   def read(con: Connection, track: Byte, lane: Byte): Int ={
-    println("In read...")
+    var result = 0
     val statement = con.createStatement()
-    val resultSet = statement.executeQuery(s"SELECT * FROM track$track")
-    while ( resultSet.next() ) {
-      val l1 = resultSet.getString("lane1")
-      val l2 = resultSet.getString("lane2")
-      val l3 = resultSet.getString("lane3")
-      println("lane 1 = " + l1 + ", lane 2 = " + l2 + ", lane 3 = " + l3)
+    var query: String = ""
+    track match {
+      case 1 =>
+        if (rev1) {
+          query = s"SELECT * FROM track$track ORDER BY id DESC"
+        } else {
+          query = s"SELECT * FROM track$track"
+        }
+      case 2 =>
+        if (rev2) {
+          query = s"SELECT * FROM track$track ORDER BY id DESC"
+        } else {
+          query = s"SELECT * FROM track$track"
+        }
+      case 3 =>
+        if (rev3) {
+          query = s"SELECT * FROM track$track ORDER BY id DESC"
+        } else {
+          query = s"SELECT * FROM track$track"
+        }
     }
-    1// TODO read() implementation doesn't return sum of points
+    val resultSet = statement.executeQuery(query)
+    while ( resultSet.next() ) {
+      var lv: Int = 0
+      lane match {
+        case 1 => lv = resultSet.getInt("lane1")
+        case 2 => lv = resultSet.getInt("lane2")
+        case 3 => lv = resultSet.getInt("lane3")
+      }
+      println("LANE VALUE = " + lv)
+      lv match {
+        case 1|2|3|4|5 => result += buff(lv)
+        case 6 => evenType = 1// 1 means buff
+        case 7 => oddType = 1
+        case 8 => evenType = 2// 2 means debuff
+        case 9 => oddType = 2
+      }
+    }
+    result
   }
 
-  def update(track: Int, lane: Int): Unit ={
-    // TODO Put the U in CRUD
+  def buff(num: Int): Int ={
+    num // TODO complete buff() implementation
+  }
+
+  def makeRev(track: Int): Unit ={
+    track match {
+      case 1 => rev1 = true
+      case 2 => rev2 = true
+      case 3 => rev3 = true
+    }
   }
 
   def delete(con: Connection, track: Byte, kind: Byte): Unit = {

@@ -53,7 +53,7 @@ object P0 {
       line()
       // Runs the read function, which returns the score of the full run on user's chosen track and lane
       result += read(con, i, lane)
-      i += 1// Increment so loop will eventually terminate
+      i = (i + 1).toByte// Increment so loop will eventually terminate
     }
     result
   }
@@ -91,7 +91,7 @@ object P0 {
     val kind = choose123()
 
     kind match {
-      case 1 => update(track, kind)// reverseTrack
+      case 1 => makeRev(track)// reverseTrack
       case 2 => delete(con, track, 1)// delOddDebuff
       case 3 => delete(con, track, 2)// delEvenDebuff
     }
