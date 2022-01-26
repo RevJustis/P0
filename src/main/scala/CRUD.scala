@@ -61,7 +61,7 @@ object CRUD { // All functions currently placeholders
         }
     }
     val resultSet = statement.executeQuery(query)
-    while ( resultSet.next() ) {
+    while ( resultSet.next ) {
       var lv: Int = 0
       lane match {
         case 1 => lv = resultSet.getInt("lane1")
@@ -75,13 +75,27 @@ object CRUD { // All functions currently placeholders
         case 7 => oddType = 1
         case 8 => evenType = 2// 2 means debuff
         case 9 => oddType = 2
+        case _ =>// nothing
       }
     }
     result
   }
 
   def buff(num: Int): Int ={
-    num // TODO complete buff() implementation
+    num % 2 match {
+      case 0 =>
+        evenType match {
+          case 1 => (num * 1.5).toInt
+          case 2 => (num * 0.5).toInt
+          case 0 => num
+        }
+      case 1 =>
+        oddType match {
+          case 1 => (num * 1.5).toInt
+          case 2 => (num * 0.5).toInt
+          case 0 => num
+        }
+    }
   }
 
   def makeRev(track: Int): Unit ={

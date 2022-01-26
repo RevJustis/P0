@@ -1,5 +1,4 @@
 import java.sql.{Connection, DriverManager}
-import scala.io.StdIn.{readChar, readLine}
 import Utilities._
 import CRUD._
 
