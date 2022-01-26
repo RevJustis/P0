@@ -68,7 +68,6 @@ object CRUD { // All functions currently placeholders
         case 2 => lv = resultSet.getInt("lane2")
         case 3 => lv = resultSet.getInt("lane3")
       }
-      println("LANE VALUE = " + lv)
       lv match {
         case 1|2|3|4|5 => result += buff(lv)
         case 6 => evenType = 1// 1 means buff
