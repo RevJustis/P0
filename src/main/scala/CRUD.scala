@@ -33,7 +33,7 @@ object CRUD { // All functions currently placeholders
     // Now create table
     stmt.executeUpdate("CREATE TABLE track" + num + cStr)
     // Call a stored procedure that will insert random integers
-    stmt.executeUpdate("CALL Rand" + num + "(20, 0, 9)")
+    stmt.executeUpdate("CALL Rand" + num + "(200, 0, 9)")
   }
 
   def read(con: Connection, track: Byte, lane: Byte): Int ={
