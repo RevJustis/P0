@@ -42,6 +42,7 @@ object P0 {
     line()
     println("Your Score is: " + result)
     println("Thank you for playing!")
+    con.close()
   }
 
   def play(con: Connection, track: Byte): Int = {
@@ -105,7 +106,7 @@ object P0 {
   }
 
   def dbConn(): Connection = {
-    val url = "jdbc:mysql://localhost:3306/sys"
+    val url = "jdbc:mysql://localhost:3306/Project0"
     val username = "root"
     val password = "rootpass"
     val driver = "com.mysql.jdbc.Driver"
